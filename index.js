@@ -13,8 +13,7 @@ app.use(express.static("reviewProfiles"));
 app.use(fileUpload());
 const port = 5000;
 
-const uri =
-  "mongodb+srv://jihadchowdhory:W9aKBjRENWOLYwG5@cluster0.8fqqs.mongodb.net/myTutor?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${DB_USER}:${process.env.DB_PASS}@cluster0.8fqqs.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
 /////////////////////////////////// Creating a Get API /////////////////////////////////////
 app.get("/", (req, res) => {
@@ -56,25 +55,18 @@ client.connect((err) => {
     const jobTitle = req.body.jobTitle;
     const company = req.body.company;
     const message = req.body.message;
-    const filePath = `${__dirname}/reviewProfiles/${file.name}`;
-    file.mv(filePath, (err) => {
-      if (err) {
-        res.send(err);
-      }
-      const newImg = fs.readFileSync(filePath);
-      const encImg = newImg.toString("base64");
-      const img = {
-        contentType: req.files.file.mimetype,
-        size: req.files.file.size,
-        img: Buffer.from(encImg, "base64"),
-      };
-      reviewCollection
-        .insertOne({ name, jobTitle, company, message, img })
-        .then((result) => {
-          fs.remove(filePath, (error) => console.log(error));
-          res.send(result.insertedCount > 0);
-        });
-    });
+    const newImg = file.data;
+    const encImg = newImg.toString("base64");
+    const img = {
+      contentType: file.mimetype,
+      size: file.size,
+      img: Buffer.from(encImg, "base64"),
+    };
+    reviewCollection
+      .insertOne({ name, jobTitle, company, message, img })
+      .then((result) => {
+        res.send(result.insertedCount > 0);
+      });
   });
 
   /////////////////////////// Load Review /////////////////////////////
@@ -126,25 +118,18 @@ client.connect((err) => {
     const courseName = req.body.courseName;
     const instructor = req.body.courseInstructor;
     const price = req.body.coursePrice;
-    const filePath = `${__dirname}/courseImages/${file.name}`;
-    file.mv(filePath, (err) => {
-      if (err) {
-        res.send(err);
-      }
-      const newImg = fs.readFileSync(filePath);
-      const encImg = newImg.toString("base64");
-      const img = {
-        contentType: req.files.file.mimetype,
-        size: req.files.file.size,
-        img: Buffer.from(encImg, "base64"),
-      };
-      courseCollection
-        .insertOne({ courseName, instructor, price, img })
-        .then((result) => {
-          fs.remove(filePath, (error) => console.log(error));
-          res.send(result.insertedCount > 0);
-        });
-    });
+    const newImg = file.data;
+    const encImg = newImg.toString("base64");
+    const img = {
+      contentType: file.mimetype,
+      size: file.size,
+      img: Buffer.from(encImg, "base64"),
+    };
+    courseCollection
+      .insertOne({ courseName, instructor, price, img })
+      .then((result) => {
+        res.send(result.insertedCount > 0);
+      });
   });
 
   /////////////////////// Load Courses /////////////////////////
