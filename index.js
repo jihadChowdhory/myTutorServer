@@ -13,7 +13,7 @@ app.use(express.static("reviewProfiles"));
 app.use(fileUpload());
 const port = 5000;
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.8fqqs.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://jihadchowdhory:W9aKBjRENWOLYwG5@cluster0.8fqqs.mongodb.net/myTutor?retryWrites=true&w=majority`;
 
 /////////////////////////////////// Creating a Get API /////////////////////////////////////
 app.get("/", (req, res) => {
