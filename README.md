@@ -1,6 +1,6 @@
 # MY Tutor
 
-[Visit Our Website] (https://my-tutor-jc.web.app/)
+Visit Our Website https://my-tutor-jc.web.app/
 
 ## About This Website
 
